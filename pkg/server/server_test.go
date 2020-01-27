@@ -2,13 +2,14 @@ package server_test
 
 import (
 	"errors"
-	"github.com/juanimoli/piccadilly/api/controller"
-	"github.com/juanimoli/piccadilly/pkg/engine/gin"
-	"github.com/juanimoli/piccadilly/pkg/server"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	"github.com/juanimoli/piccadilly/api/controller"
+	"github.com/juanimoli/piccadilly/pkg/engine/gin"
+	"github.com/juanimoli/piccadilly/pkg/server"
 
 	"github.com/stretchr/testify/assert"
 )

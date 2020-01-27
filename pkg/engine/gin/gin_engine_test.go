@@ -1,14 +1,15 @@
 package gin_test
 
 import (
-	"github.com/juanimoli/piccadilly/api/controller"
-	http2 "github.com/juanimoli/piccadilly/api/http"
-	"github.com/juanimoli/piccadilly/pkg/engine/gin"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"strings"
 	"testing"
+
+	"github.com/juanimoli/piccadilly/api/controller"
+	http2 "github.com/juanimoli/piccadilly/api/http"
+	"github.com/juanimoli/piccadilly/pkg/engine/gin"
 
 	"github.com/stretchr/testify/assert"
 )

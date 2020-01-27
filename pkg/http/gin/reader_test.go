@@ -1,12 +1,13 @@
 package gin_test
 
 import (
-	gin2 "github.com/juanimoli/piccadilly/pkg/http/gin"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
 	"testing"
+
+	gin2 "github.com/juanimoli/piccadilly/pkg/http/gin"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"

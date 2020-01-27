@@ -2,6 +2,7 @@ package gin
 
 import (
 	"fmt"
+
 	"github.com/juanimoli/piccadilly/api/http"
 
 	"github.com/gin-gonic/gin"

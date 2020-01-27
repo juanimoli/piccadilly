@@ -1,9 +1,10 @@
 package gin_test
 
 import (
+	"testing"
+
 	"github.com/juanimoli/piccadilly/api/http"
 	gin2 "github.com/juanimoli/piccadilly/pkg/http/gin"
-	"testing"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"

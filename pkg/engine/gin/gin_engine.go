@@ -4,15 +4,16 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/juanimoli/piccadilly/api/controller"
-	"github.com/juanimoli/piccadilly/api/engine"
-	gin2 "github.com/juanimoli/piccadilly/pkg/http/gin"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/juanimoli/piccadilly/api/controller"
+	"github.com/juanimoli/piccadilly/api/engine"
+	gin2 "github.com/juanimoli/piccadilly/pkg/http/gin"
 
 	"github.com/gin-gonic/gin"
 )
