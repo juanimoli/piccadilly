@@ -21,7 +21,7 @@ func TestGetPortReturnsSpecificIfUsingEnvVar(t *testing.T) {
 }
 
 func TestGetPortReturns8080(t *testing.T) {
-	assert.Equal(t, "8080", gin.GetPort())
+	assert.Equal(t, "3000", gin.GetPort())
 }
 
 func TestRegisterMiddleware(t *testing.T) {
