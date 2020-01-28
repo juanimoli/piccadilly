@@ -11,5 +11,7 @@ type Reader interface {
 
 	GetFormData(key string) (string, bool)
 
+	GetAllFormData() interface{}
+
 	ReadBody(obj interface{}) error
 }

@@ -17,8 +17,7 @@ func CreatePostController() controller.Controller {
 func CreatePostBody() http.Handler {
 	return func(ctx *http.Context) {
 		fmt.Println(ctx.GetHeaders())
-		var body map[string]interface{}
-		_ = ctx.ReadBody(&body)
+		body := ctx.GetAllFormData()
 		fmt.Println(body)
 	}
 }

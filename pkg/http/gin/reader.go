@@ -29,6 +29,10 @@ func (g ginReader) GetUrl() string {
 	return g.Request.URL.String()
 }
 
+func (g ginReader) GetAllFormData() interface{} {
+	return g.Request.PostForm
+}
+
 func CreateReader(ctx *gin.Context) http.Reader {
 	return &ginReader{ctx}
 }
