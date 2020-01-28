@@ -17,6 +17,10 @@ func (g ginReader) GetFormData(key string) (string, bool) {
 	return g.GetPostForm(key)
 }
 
+func (g ginReader) GetHeaders() map[string][]string {
+	return g.Context.Request.Header
+}
+
 func (g ginReader) ReadBody(obj interface{}) error {
 	return g.ShouldBindJSON(obj)
 }

@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"github.com/juanimoli/piccadilly/pkg/binder/random"
 
 	"github.com/juanimoli/piccadilly/api/engine"
 	"github.com/juanimoli/piccadilly/pkg/binder/health"
@@ -20,6 +21,7 @@ func StartApplication(engine engine.ServerEngine) error {
 func CreateBinders() []engine.ControllerBinder {
 	return []engine.ControllerBinder{
 		health.CreateHealthBinder(),
+		random.CreateRandomBinder(),
 	}
 }
 
