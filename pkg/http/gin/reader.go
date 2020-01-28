@@ -30,6 +30,7 @@ func (g ginReader) GetUrl() string {
 }
 
 func (g ginReader) GetAllFormData() interface{} {
+	_ = g.Request.ParseForm()
 	return g.Request.PostForm
 }
 
