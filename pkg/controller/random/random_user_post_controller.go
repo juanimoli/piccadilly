@@ -94,7 +94,6 @@ func CreatePostBody() http.Handler {
 				Channel:        reviewRequest.ChannelId,
 				Token:          os.Getenv("SECRET_SLACK_TOKEN"),
 				ReplyBroadcast: true,
-				ThreadTs:       "PARENT_MESSAGE_TS",
 				DeleteOriginal: "true",
 			})
 
@@ -105,6 +104,7 @@ func CreatePostBody() http.Handler {
 			}
 
 			resp, err := net.Post("https://slack.com/api/chat.postMessage", "application/json", bytes.NewReader(bodyBytes))
+
 			if err != nil || resp.StatusCode != net.StatusOK {
 				ctx.AbortTransactionWithError(http.CreateInternalError())
 				log.Fatal(err)
