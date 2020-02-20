@@ -41,7 +41,7 @@ func CreatePostBody() http.Handler {
 			return
 		}
 
-		fmt.Println("1")
+		fmt.Printf("1 %v\n", reviewRequest)
 
 		params := strings.Fields(reviewRequest.Text)
 		if len(params) != 2 {
@@ -51,11 +51,11 @@ func CreatePostBody() http.Handler {
 			return
 		}
 
-		fmt.Println("2")
-
 		userGroupId := params[0]
 
-		resp, err := net.Get("https://slack.com/api/usergroups.users.list?token=" + os.Getenv("SECRET_SLACK_TOKEN") + "&usergroup=" + userGroupId + "&pretty=1")
+		fmt.Printf("2 %v\n", userGroupId)
+
+		resp, err := net.Get("https://slack.com/api/usergroups.users.list?token=" + os.Getenv("SECRET_SLACK_TOKEN") + "&usergroup=" + userGroupId)
 
 		if err != nil {
 			ctx.AbortTransactionWithError(http.CreateInternalError())
@@ -63,37 +63,35 @@ func CreatePostBody() http.Handler {
 			return
 		}
 
-		fmt.Println("3")
+		fmt.Printf("3 %v\n", resp)
 
 		defer resp.Body.Close()
 
 		if resp.StatusCode == net.StatusOK {
 			bodyBytes, err := ioutil.ReadAll(resp.Body)
 
-			fmt.Println("4")
+			fmt.Printf("4 %v\n", string(bodyBytes))
 
 			if err != nil {
 				ctx.AbortTransactionWithError(http.CreateInternalError())
 				log.Fatal(err)
 				return
 			}
-
-			fmt.Println("4")
 
 			var slackUserGroupResponse model.SlackUserGroup
 			err = json.Unmarshal(bodyBytes, &slackUserGroupResponse)
 
+			fmt.Printf("5 %v\n", slackUserGroupResponse)
+
 			if err != nil {
 				ctx.AbortTransactionWithError(http.CreateInternalError())
 				log.Fatal(err)
 				return
 			}
 
-			fmt.Println("5")
-
 			if !slackUserGroupResponse.Ok {
 				ctx.AbortTransactionWithError(http.CreateInternalError())
-				log.Fatal(err)
+				log.Fatal("Not OK papu")
 				return
 			}
 
@@ -101,13 +99,13 @@ func CreatePostBody() http.Handler {
 
 			bodyBytes, err = json.Marshal(model.SlackMessage{Message: selected + " have been chosen for review"})
 
+			fmt.Printf("6 %v\n", selected)
+
 			if err != nil {
 				ctx.AbortTransactionWithError(http.CreateInternalError())
 				log.Fatal(err)
 				return
 			}
-
-			fmt.Println("6")
 
 			net.Post(reviewRequest.ResponseUrl, "application/json", bytes.NewReader(bodyBytes))
 		}
