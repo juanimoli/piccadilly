@@ -43,32 +43,15 @@ func TestGivenAReaderMockWithFullJSON_WhenThePostBodyIsExecuted_ThenTheBodyIsCon
 	readerMock.AssertExpectations(t)
 }
 
-func TestGivenAReaderMockWithUncompletedJSON_WhenPostBodyIsExcecuted_ThenIsAbortedWithBadRequestCode(t *testing.T) {
-	var result *model.ReviewRequest
-	readerMock := new(mock2.ReaderMock)
-	readerMock.On("ReadBody", mock.MatchedBy(func(obj *model.ReviewRequest) bool {
-		json.Unmarshal([]byte(`{
+func TestForradaPapu(t *testing.T) {
+	var result model.ReviewRequest
+	err := json.Unmarshal([]byte(`{
 			"channel_id": "DSEEXL90S",
 			"user_id": "USV6FBMTR",
-			"user_name": "jimolina"
-		}`), obj)
-		result = obj
-		return true
-	})).Return(nil)
-	middlewareMock := new(mock2.MiddlewareMock)
-	middlewareMock.On("AbortTransactionWithError", http.CreateInternalError()).Return(nil)
+			"user_name": "jimolina",
+			"response_url": "lakjsdadfsjkldfas",
+			"text": "tuvieja en tanga"
+		}`), &result)
 
-	ctx := &http.Context{
-		Reader:     readerMock,
-		Writer:     nil,
-		Middleware: nil,
-	}
-
-	body := random.CreatePostBody()
-
-	body(ctx)
-
-	//assert.Equal(t, )
-
-	readerMock.AssertExpectations(t)
+	assert.Nil(t, err)
 }
