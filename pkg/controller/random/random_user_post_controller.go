@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"math/rand"
 	net "net/http"
+	"os"
 	"strings"
 )
 
@@ -36,7 +37,7 @@ func CreatePostBody() http.Handler {
 
 		userGroupId := params[0]
 
-		resp, err := net.Get("https://slack.com/api/usergroups.users.list?token=xoxb-2358979026-915903797473-xdTIg7cNsr9Dl1pVbf3WP8Q6&usergroup=" + userGroupId + "&pretty=1")
+		resp, err := net.Get("https://slack.com/api/usergroups.users.list?token=" + os.Getenv("SECRET_SLACK_TOKEN") + "&usergroup=" + userGroupId + "&pretty=1")
 
 		if err != nil {
 			ctx.AbortTransactionWithError(http.CreateInternalError())
