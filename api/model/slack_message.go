@@ -5,8 +5,6 @@ type SlackMessage struct {
 
 	Channel string `json:"channel"`
 
-	Token string `json:"token"`
-
 	ReplyBroadcast bool `json:"reply_broadcast"`
 
 	ThreadTs string `json:"thread_ts"`
