@@ -103,8 +103,8 @@ func CreatePostBody() http.Handler {
 				return
 			}
 
-			resp, err := net.Post("https://slack.com/api/chat.postMessage", "application/json", bytes.NewReader(bodyBytes))
 			fmt.Printf("%v", string(bodyBytes))
+			resp, err := net.Post("https://slack.com/api/chat.postMessage", "application/json", bytes.NewReader(bodyBytes))
 
 			if err != nil || resp.StatusCode != net.StatusOK {
 				ctx.AbortTransactionWithError(http.CreateInternalError())
