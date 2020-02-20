@@ -91,7 +91,9 @@ func CreatePostBody() http.Handler {
 
 			bodyBytes, err = json.Marshal(model.SlackMessage{
 				Message:        fmt.Sprintf("<@%s> has been selected to review %s pull request", selected, params[1]),
-				ReplyBroadcast:  true,
+				Channel: reviewRequest.ChannelId,
+				Token: os.Getenv("SECRET_SLACK_TOKEN"),
+				ReplyBroadcast: true,
 				ThreadTs:  "PARENT_MESSAGE_TS",
 				DeleteOriginal: "true",
 			})
@@ -102,7 +104,7 @@ func CreatePostBody() http.Handler {
 				return
 			}
 
-			net.Post(reviewRequest.ResponseUrl, "application/json", bytes.NewReader(bodyBytes))
+			net.Post("https://slack.com/api/chat.postMessage", "application/json", bytes.NewReader(bodyBytes))
 		}
 	}
 }
