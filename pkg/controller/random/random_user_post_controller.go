@@ -3,6 +3,7 @@ package random
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"github.com/juanimoli/piccadilly/api/controller"
 	"github.com/juanimoli/piccadilly/api/http"
 	"github.com/juanimoli/piccadilly/api/model"
@@ -40,6 +41,8 @@ func CreatePostBody() http.Handler {
 			return
 		}
 
+		fmt.Println("1")
+
 		params := strings.Fields(reviewRequest.Text)
 		if len(params) != 2 {
 			//TODO not 400 capo, mandale un mensaje que se equivoco de params
@@ -47,6 +50,8 @@ func CreatePostBody() http.Handler {
 			log.Fatal("Wrong number of parameters")
 			return
 		}
+
+		fmt.Println("2")
 
 		userGroupId := params[0]
 
@@ -58,16 +63,22 @@ func CreatePostBody() http.Handler {
 			return
 		}
 
+		fmt.Println("3")
+
 		defer resp.Body.Close()
 
 		if resp.StatusCode == net.StatusOK {
 			bodyBytes, err := ioutil.ReadAll(resp.Body)
+
+			fmt.Println("4")
 
 			if err != nil {
 				ctx.AbortTransactionWithError(http.CreateInternalError())
 				log.Fatal(err)
 				return
 			}
+
+			fmt.Println("4")
 
 			var slackUserGroupResponse model.SlackUserGroup
 			err = json.Unmarshal(bodyBytes, &slackUserGroupResponse)
@@ -77,6 +88,8 @@ func CreatePostBody() http.Handler {
 				log.Fatal(err)
 				return
 			}
+
+			fmt.Println("5")
 
 			if !slackUserGroupResponse.Ok {
 				ctx.AbortTransactionWithError(http.CreateInternalError())
@@ -93,6 +106,8 @@ func CreatePostBody() http.Handler {
 				log.Fatal(err)
 				return
 			}
+
+			fmt.Println("6")
 
 			net.Post(reviewRequest.ResponseUrl, "application/json", bytes.NewReader(bodyBytes))
 		}
