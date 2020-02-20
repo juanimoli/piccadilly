@@ -7,6 +7,7 @@ import (
 	"github.com/juanimoli/piccadilly/api/http"
 	"github.com/juanimoli/piccadilly/api/model"
 	"io/ioutil"
+	"log"
 	"math/rand"
 	net "net/http"
 	"os"
@@ -28,11 +29,15 @@ func CreatePostBody() http.Handler {
 
 		if err != nil {
 			ctx.AbortTransactionWithError(http.CreateInternalError())
+			log.Fatal(err)
+			return
 		}
 
 		params := strings.Fields(reviewRequest.Text)
 		if len(params) != 2 {
+			//TODO not 400 capo, mandale un mensaje que se equivoco de params
 			ctx.AbortTransactionWithError(http.CreateBadRequestError("wrong number of parameters"))
+			log.Fatal(err)
 			return
 		}
 
@@ -42,6 +47,7 @@ func CreatePostBody() http.Handler {
 
 		if err != nil {
 			ctx.AbortTransactionWithError(http.CreateInternalError())
+			log.Fatal(err)
 			return
 		}
 
@@ -52,6 +58,7 @@ func CreatePostBody() http.Handler {
 
 			if err != nil {
 				ctx.AbortTransactionWithError(http.CreateInternalError())
+				log.Fatal(err)
 				return
 			}
 
@@ -60,11 +67,13 @@ func CreatePostBody() http.Handler {
 
 			if err != nil {
 				ctx.AbortTransactionWithError(http.CreateInternalError())
+				log.Fatal(err)
 				return
 			}
 
 			if !slackUserGroupResponse.Ok {
 				ctx.AbortTransactionWithError(http.CreateInternalError())
+				log.Fatal(err)
 				return
 			}
 
@@ -74,6 +83,7 @@ func CreatePostBody() http.Handler {
 
 			if err != nil {
 				ctx.AbortTransactionWithError(http.CreateInternalError())
+				log.Fatal(err)
 				return
 			}
 
