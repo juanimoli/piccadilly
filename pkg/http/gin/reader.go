@@ -25,7 +25,7 @@ func (g ginReader) GetHeaders() map[string][]string {
 
 func (g ginReader) ReadBody(obj interface{}) error {
 	asd, err := ioutil.ReadAll(g.Request.Body)
-	fmt.Println(asd)
+	fmt.Println(string(asd))
 	fmt.Println(err)
 	return g.ShouldBindJSON(obj)
 }
