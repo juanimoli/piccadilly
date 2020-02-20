@@ -1,10 +1,8 @@
 package gin
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/juanimoli/piccadilly/api/http"
-	"io/ioutil"
 )
 
 type ginReader struct {
@@ -24,10 +22,6 @@ func (g ginReader) GetHeaders() map[string][]string {
 }
 
 func (g ginReader) ReadBody(obj interface{}) error {
-	asd, err := ioutil.ReadAll(g.Request.Body)
-	fmt.Println(g.Request.Header.Get("Content-Type"))
-	fmt.Println(string(asd))
-	fmt.Println(err)
 	return g.ShouldBindJSON(obj)
 }
 

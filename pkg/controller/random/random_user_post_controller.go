@@ -24,12 +24,19 @@ func CreatePostController() controller.Controller {
 
 func CreatePostBody() http.Handler {
 	return func(ctx *http.Context) {
-		var reviewRequest model.ReviewRequest
-		err := ctx.ReadBody(&reviewRequest)
+		var existsChanId, existsText, existsRespUrl, existsUserName, existsUserId bool
+		reviewRequest := model.ReviewRequest{}
+		reviewRequest.ChannelId, existsChanId = ctx.GetFormData("channel_id")
+		reviewRequest.Text, existsText = ctx.GetFormData("text")
+		reviewRequest.ResponseUrl, existsRespUrl = ctx.GetFormData("response_url")
+		reviewRequest.User = &model.User{}
+		reviewRequest.User.Name, existsUserName = ctx.GetFormData("user_name")
+		reviewRequest.User.ID,existsUserId = ctx.GetFormData("user_id")
 
-		if err != nil {
+		if !existsChanId || !existsText || !existsRespUrl || !existsUserName || !existsUserId {
 			ctx.AbortTransactionWithError(http.CreateInternalError())
-			log.Fatal(err)
+			//TODO not 400 capo, mandale un mensaje que se equivoco de params
+			log.Fatal("Missing parameters")
 			return
 		}
 
@@ -37,7 +44,7 @@ func CreatePostBody() http.Handler {
 		if len(params) != 2 {
 			//TODO not 400 capo, mandale un mensaje que se equivoco de params
 			ctx.AbortTransactionWithError(http.CreateBadRequestError("wrong number of parameters"))
-			log.Fatal(err)
+			log.Fatal("Wrong number of parameters")
 			return
 		}
 
