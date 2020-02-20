@@ -91,7 +91,7 @@ func CreatePostBody() http.Handler {
 			ctx.WriteJson(200, model.SlackMessage{
 				Message:        fmt.Sprintf("<@%s> has been selected to review %s pull request", selected, params[1]),
 				Channel:        reviewRequest.ChannelId,
-				ReplyBroadcast: true,
+				ResponseType: "in_channel",
 				DeleteOriginal: "true",
 			})
 		}
