@@ -53,7 +53,7 @@ func CreatePostBody() http.Handler {
 		}
 
 		r := regexp.MustCompile(`^<!subteam\^(.*)\|.*>$`)
-		userGroupId := r.FindStringSubmatch(params[0])[0]
+		userGroupId := r.FindStringSubmatch(params[0])[1]
 
 		fmt.Printf("2 %v\n", userGroupId)
 
