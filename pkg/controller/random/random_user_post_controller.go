@@ -33,6 +33,7 @@ func CreatePostBody() http.Handler {
 		params := strings.Fields(reviewRequest.Text)
 		if len(params) != 2 {
 			ctx.AbortTransactionWithError(http.CreateBadRequestError("wrong number of parameters"))
+			return
 		}
 
 		userGroupId := params[0]
@@ -41,6 +42,7 @@ func CreatePostBody() http.Handler {
 
 		if err != nil {
 			ctx.AbortTransactionWithError(http.CreateInternalError())
+			return
 		}
 
 		defer resp.Body.Close()
@@ -50,6 +52,7 @@ func CreatePostBody() http.Handler {
 
 			if err != nil {
 				ctx.AbortTransactionWithError(http.CreateInternalError())
+				return
 			}
 
 			var slackUserGroupResponse model.SlackUserGroup
@@ -57,10 +60,12 @@ func CreatePostBody() http.Handler {
 
 			if err != nil {
 				ctx.AbortTransactionWithError(http.CreateInternalError())
+				return
 			}
 
 			if !slackUserGroupResponse.Ok {
 				ctx.AbortTransactionWithError(http.CreateInternalError())
+				return
 			}
 
 			selected := slackUserGroupResponse.Users[rand.Intn(len(slackUserGroupResponse.Users))]
@@ -69,6 +74,7 @@ func CreatePostBody() http.Handler {
 
 			if err != nil {
 				ctx.AbortTransactionWithError(http.CreateInternalError())
+				return
 			}
 
 			net.Post(reviewRequest.ResponseUrl, "application/json", bytes.NewReader(bodyBytes))
