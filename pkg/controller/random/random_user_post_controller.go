@@ -42,8 +42,6 @@ func CreatePostBody() http.Handler {
 			return
 		}
 
-		fmt.Printf("1 %v\n", reviewRequest)
-
 		params := strings.Fields(reviewRequest.Text)
 		if len(params) != 2 {
 			//TODO not 400 capo, mandale un mensaje que se equivoco de params
@@ -55,8 +53,6 @@ func CreatePostBody() http.Handler {
 		r := regexp.MustCompile(`^<!subteam\^(.*)\|.*>$`)
 		userGroupId := r.FindStringSubmatch(params[0])[1]
 
-		fmt.Printf("2 %v\n", userGroupId)
-
 		resp, err := net.Get("https://slack.com/api/usergroups.users.list?token=" + os.Getenv("SECRET_SLACK_TOKEN") + "&usergroup=" + userGroupId)
 
 		if err != nil {
@@ -65,12 +61,8 @@ func CreatePostBody() http.Handler {
 			return
 		}
 
-		fmt.Printf("3 %v\n", resp)
-
 		if resp.StatusCode == net.StatusOK {
 			bodyBytes, err := ioutil.ReadAll(resp.Body)
-
-			fmt.Printf("4 %v\n", string(bodyBytes))
 
 			if err != nil {
 				ctx.AbortTransactionWithError(http.CreateInternalError())
@@ -80,8 +72,6 @@ func CreatePostBody() http.Handler {
 
 			var slackUserGroupResponse model.SlackUserGroup
 			err = json.Unmarshal(bodyBytes, &slackUserGroupResponse)
-
-			fmt.Printf("5 %v\n", slackUserGroupResponse)
 
 			if err != nil {
 				ctx.AbortTransactionWithError(http.CreateInternalError())
@@ -96,6 +86,7 @@ func CreatePostBody() http.Handler {
 			}
 
 			//TODO: check lista vacia
+			//TODO: sacarme a mi mismo de la lista
 			selected := slackUserGroupResponse.Users[rand.Intn(len(slackUserGroupResponse.Users))]
 
 			bodyBytes, err = json.Marshal(model.SlackMessage{
@@ -103,8 +94,6 @@ func CreatePostBody() http.Handler {
 				ResponseType:   "ephemeral",
 				DeleteOriginal: "true",
 			})
-
-			fmt.Printf("6 %v\n", selected)
 
 			if err != nil {
 				ctx.AbortTransactionWithError(http.CreateInternalError())
