@@ -12,6 +12,7 @@ import (
 	"math/rand"
 	net "net/http"
 	"os"
+	"regexp"
 	"strings"
 )
 
@@ -32,7 +33,7 @@ func CreatePostBody() http.Handler {
 		reviewRequest.ResponseUrl, existsRespUrl = ctx.GetFormData("response_url")
 		reviewRequest.User = &model.User{}
 		reviewRequest.User.Name, existsUserName = ctx.GetFormData("user_name")
-		reviewRequest.User.ID,existsUserId = ctx.GetFormData("user_id")
+		reviewRequest.User.ID, existsUserId = ctx.GetFormData("user_id")
 
 		if !existsChanId || !existsText || !existsRespUrl || !existsUserName || !existsUserId {
 			ctx.AbortTransactionWithError(http.CreateInternalError())
@@ -51,7 +52,8 @@ func CreatePostBody() http.Handler {
 			return
 		}
 
-		userGroupId := params[0]
+		r := regexp.MustCompile(`^<!subteam\^(.*)\|.*>$`)
+		userGroupId := r.FindStringSubmatch(params[0])[0]
 
 		fmt.Printf("2 %v\n", userGroupId)
 
@@ -64,8 +66,6 @@ func CreatePostBody() http.Handler {
 		}
 
 		fmt.Printf("3 %v\n", resp)
-
-		defer resp.Body.Close()
 
 		if resp.StatusCode == net.StatusOK {
 			bodyBytes, err := ioutil.ReadAll(resp.Body)
