@@ -1,7 +1,6 @@
 package random
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"github.com/juanimoli/piccadilly/api/controller"
@@ -89,27 +88,12 @@ func CreatePostBody() http.Handler {
 			//TODO: sacarme a mi mismo de la lista
 			selected := slackUserGroupResponse.Users[rand.Intn(len(slackUserGroupResponse.Users))]
 
-			bodyBytes, err = json.Marshal(model.SlackMessage{
+			ctx.WriteJson(200, model.SlackMessage{
 				Message:        fmt.Sprintf("<@%s> has been selected to review %s pull request", selected, params[1]),
 				Channel:        reviewRequest.ChannelId,
 				ReplyBroadcast: true,
 				DeleteOriginal: "true",
 			})
-
-			if err != nil {
-				ctx.AbortTransactionWithError(http.CreateInternalError())
-				log.Fatal(err)
-				return
-			}
-
-			fmt.Printf("%v", string(bodyBytes))
-			resp, err := net.Post("https://slack.com/api/chat.postMessage?token="+os.Getenv("SECRET_SLACK_TOKEN"), "application/json", bytes.NewReader(bodyBytes))
-
-			if err != nil || resp.StatusCode != net.StatusOK {
-				ctx.AbortTransactionWithError(http.CreateInternalError())
-				log.Fatal(err)
-				return
-			}
 		}
 	}
 }
