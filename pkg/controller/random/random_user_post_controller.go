@@ -98,7 +98,11 @@ func CreatePostBody() http.Handler {
 			//TODO: check lista vacia
 			selected := slackUserGroupResponse.Users[rand.Intn(len(slackUserGroupResponse.Users))]
 
-			bodyBytes, err = json.Marshal(model.SlackMessage{Message: "<@" + selected + "> have been chosen for review"})
+			bodyBytes, err = json.Marshal(model.SlackMessage{
+				Message:        fmt.Sprintf("<@%s> has been selected to review %s pull request", selected, params[1]),
+				ResponseType:   "ephemeral",
+				DeleteOriginal: "true",
+			})
 
 			fmt.Printf("6 %v\n", selected)
 
