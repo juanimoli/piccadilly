@@ -95,6 +95,7 @@ func CreatePostBody() http.Handler {
 				return
 			}
 
+			//TODO: check lista vacia
 			selected := slackUserGroupResponse.Users[rand.Intn(len(slackUserGroupResponse.Users))]
 
 			bodyBytes, err = json.Marshal(model.SlackMessage{Message: selected + " have been chosen for review"})
