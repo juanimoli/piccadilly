@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/juanimoli/piccadilly/pkg/engine/gin"
-	"github.com/juanimoli/piccadilly/pkg/server"
+	"github.com/juanimoli/piccadilly/cmd/piccadilly/infra/engine/gin"
+	"github.com/juanimoli/piccadilly/cmd/piccadilly/infra/server"
 )
 
 func main() {
