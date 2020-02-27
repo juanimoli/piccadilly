@@ -13,7 +13,7 @@ import (
 
 func TestGivenAReaderMockWithFullJSON_WhenThePostBodyIsExecuted_ThenTheBodyIsConsumed(t *testing.T) {
 	var result *model.ReviewRequest
-	readerMock := new(mock2.ReaderMock)
+	readerMock := new(mock2.Reader)
 	readerMock.On("ReadBody", mock.MatchedBy(func(obj *model.ReviewRequest) bool {
 		json.Unmarshal([]byte(`{
 			"channel_id": "DSEEXL90S",

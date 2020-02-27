@@ -1,31 +1,12 @@
 package random
 
 import (
-	"encoding/json"
-	"fmt"
-	"github.com/juanimoli/piccadilly/pkg/domain/controller"
 	"github.com/juanimoli/piccadilly/pkg/domain/http"
-	"github.com/juanimoli/piccadilly/pkg/domain/model"
-	model2 "github.com/juanimoli/piccadilly/pkg/infra/slack/model"
-	"github.com/juanimoli/piccadilly/pkg/infra/slack/repository"
-	"io/ioutil"
-	"log"
-	"math/rand"
-	net "net/http"
-	"os"
 )
-
-func CreatePostController() controller.Controller {
-	return controller.Controller{
-		Method: "POST",
-		Path:   "/slack/random",
-		Body:   CreatePostBody(),
-	}
-}
 
 func CreatePostBody() http.Handler {
 	return func(ctx *http.Context) {
-
+		/*
 		reviewRequest, err := Map(ctx)
 
 		if err != nil {
@@ -53,5 +34,6 @@ func CreatePostBody() http.Handler {
 		} else {
 
 		}
+		*/
 	}
 }

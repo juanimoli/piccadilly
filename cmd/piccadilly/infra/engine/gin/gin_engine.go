@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	gin2 "github.com/juanimoli/piccadilly/cmd/piccadilly/infra/http/gin"
+	http2 "github.com/juanimoli/piccadilly/pkg/domain/http"
 	"log"
 	"net/http"
 	"os"
@@ -11,8 +13,6 @@ import (
 	"syscall"
 	"time"
 
-	gin2 "github.com/juanimoli/piccadilly/cmd/piccadilly/infra/http/gin"
-	"github.com/juanimoli/piccadilly/pkg/domain/controller"
 	"github.com/juanimoli/piccadilly/pkg/domain/engine"
 
 	"github.com/gin-gonic/gin"
@@ -21,38 +21,60 @@ import (
 func New() engine.ServerEngine {
 	return &serverEngine{
 		engine: gin.Default(),
-		port:   GetPort(),
 	}
 }
 
 type serverEngine struct {
 	*http.Server
 	engine *gin.Engine
-	port   string
 }
 
-func (server serverEngine) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
-	server.engine.ServeHTTP(writer, request)
+func (s *serverEngine) GET(url string, handlers ...http2.Handler) {
+	s.engine.GET(url, gin2.CreateHandlers(handlers...)...)
 }
 
-func (server serverEngine) Run() error {
-	if server.Server != nil {
+func (s *serverEngine) POST(url string, handlers ...http2.Handler) {
+	s.engine.POST(url, gin2.CreateHandlers(handlers...)...)
+}
+
+func (s *serverEngine) PUT(url string, handlers ...http2.Handler) {
+	s.engine.PUT(url, gin2.CreateHandlers(handlers...)...)
+}
+
+func (s *serverEngine) PATCH(url string, handlers ...http2.Handler) {
+	s.engine.PATCH(url, gin2.CreateHandlers(handlers...)...)
+}
+
+func (s *serverEngine) DELETE(url string, handlers ...http2.Handler) {
+	s.engine.DELETE(url, gin2.CreateHandlers(handlers...)...)
+}
+
+func (s *serverEngine) Use(handlers ...http2.Handler) {
+	s.engine.Use(gin2.CreateHandlers(handlers...)...)
+}
+
+func (s serverEngine) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
+	s.engine.ServeHTTP(writer, request)
+}
+
+func (s serverEngine) Run(port string) error {
+	if s.Server != nil {
 		return errors.New("can't ignite, server already running")
 	}
 
-	addr := ":" + server.port
+	addr := ":" + port
 	fmt.Printf("Listening and serving HTTP on %s\n", addr)
 
-	server.Server = &http.Server{
+	s.Server = &http.Server{
 		Addr:    addr,
-		Handler: server.engine,
+		Handler: s.engine,
 	}
 
-	return server.ListenAndServe()
+	return s.ListenAndServe()
 }
 
-func (server serverEngine) Shutdown() error {
-	if server.Server == nil {
+func (s serverEngine) Shutdown() error {
+	if s.Server == nil {
 		return errors.New("no server running")
 	}
 
@@ -64,7 +86,7 @@ func (server serverEngine) Shutdown() error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-	if err := server.Server.Shutdown(ctx); err != nil {
+	if err := s.Server.Shutdown(ctx); err != nil {
 		log.Fatal("Server Shutdown:", err)
 	}
 
@@ -76,26 +98,4 @@ func (server serverEngine) Shutdown() error {
 	log.Println("Server exiting")
 
 	return nil
-}
-
-func (server serverEngine) Register(controller controller.Controller) {
-	var handlers []gin.HandlerFunc
-	if controller.Middleware != nil {
-		handlers = append(handlers, gin2.CreateHandlers(controller.Middleware...)...)
-	}
-	handlers = append(handlers, gin2.CreateHandler(controller.Body))
-
-	server.engine.Handle(
-		controller.Method,
-		controller.Path,
-		handlers...,
-	)
-}
-
-func GetPort() string {
-	var port = os.Getenv("PORT")
-	if port == "" {
-		port = "3000"
-	}
-	return port
 }
