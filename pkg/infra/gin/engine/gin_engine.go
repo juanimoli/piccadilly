@@ -1,11 +1,11 @@
-package gin
+package engine
 
 import (
 	"context"
 	"errors"
 	"fmt"
-	gin2 "github.com/juanimoli/piccadilly/cmd/piccadilly/infra/http/gin"
 	http2 "github.com/juanimoli/piccadilly/pkg/domain/http"
+	http3 "github.com/juanimoli/piccadilly/pkg/infra/gin/http"
 	"log"
 	"net/http"
 	"os"
@@ -30,27 +30,27 @@ type serverEngine struct {
 }
 
 func (s *serverEngine) GET(url string, handlers ...http2.Handler) {
-	s.engine.GET(url, gin2.CreateHandlers(handlers...)...)
+	s.engine.GET(url, http3.CreateHandlers(handlers...)...)
 }
 
 func (s *serverEngine) POST(url string, handlers ...http2.Handler) {
-	s.engine.POST(url, gin2.CreateHandlers(handlers...)...)
+	s.engine.POST(url, http3.CreateHandlers(handlers...)...)
 }
 
 func (s *serverEngine) PUT(url string, handlers ...http2.Handler) {
-	s.engine.PUT(url, gin2.CreateHandlers(handlers...)...)
+	s.engine.PUT(url, http3.CreateHandlers(handlers...)...)
 }
 
 func (s *serverEngine) PATCH(url string, handlers ...http2.Handler) {
-	s.engine.PATCH(url, gin2.CreateHandlers(handlers...)...)
+	s.engine.PATCH(url, http3.CreateHandlers(handlers...)...)
 }
 
 func (s *serverEngine) DELETE(url string, handlers ...http2.Handler) {
-	s.engine.DELETE(url, gin2.CreateHandlers(handlers...)...)
+	s.engine.DELETE(url, http3.CreateHandlers(handlers...)...)
 }
 
 func (s *serverEngine) Use(handlers ...http2.Handler) {
-	s.engine.Use(gin2.CreateHandlers(handlers...)...)
+	s.engine.Use(http3.CreateHandlers(handlers...)...)
 }
 
 func (s serverEngine) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
