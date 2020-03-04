@@ -1,12 +1,11 @@
-package gin_test
+package http_test
 
 import (
+	http2 "github.com/juanimoli/piccadilly/pkg/infra/gin/http"
 	"testing"
 
-	gin2 "github.com/juanimoli/piccadilly/cmd/piccadilly/infra/http/gin"
-	"github.com/juanimoli/piccadilly/pkg/domain/http"
-
 	"github.com/gin-gonic/gin"
+	"github.com/juanimoli/piccadilly/pkg/domain/http"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -16,7 +15,7 @@ func TestCreateHandler_Delegates(t *testing.T) {
 		invocations++
 	}
 
-	gin2.CreateHandler(handlerFunc)(new(gin.Context))
+	http2.CreateHandler(handlerFunc)(new(gin.Context))
 
 	assert.Equal(t, 1, invocations)
 }
@@ -27,7 +26,7 @@ func TestCreateHandlers_Delegates(t *testing.T) {
 		invocations++
 	}
 
-	handlers := gin2.CreateHandlers(handlerFunc, handlerFunc)
+	handlers := http2.CreateHandlers(handlerFunc, handlerFunc)
 
 	assert.Equal(t, 2, len(handlers))
 

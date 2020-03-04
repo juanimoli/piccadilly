@@ -2,11 +2,11 @@ package repository
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/juanimoli/piccadilly/pkg/domain/model"
 	model2 "github.com/juanimoli/piccadilly/pkg/infra/slack/model"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"os"
 )
 
@@ -22,15 +22,19 @@ const (
 	slackUserGroupURLUserGroupParam = "userGroup"
 )
 
-func (s SlackRestClientRepository) GetUsersByUserGroup(userGroupID string) ([]model.User, error) {
-	url := fmt.Sprintf("%s?%s=%s&%s=%s",
-		slackUserGroupURL,
-		slackUserGroupURLTokenParam,
-		os.Getenv("SECRET_SLACK_TOKEN"),
-		slackUserGroupURLUserGroupParam,
-		userGroupID)
+func (s SlackRestClientRepository) GetUsers(userGroupID string) ([]model.User, error) {
+	u, err := url.Parse(slackUserGroupURL)
 
-	res, err := s.HttpGet(url)
+	if err != nil {
+		return []model.User{}, err
+	}
+
+	q := u.Query()
+	q.Set(slackUserGroupURLTokenParam, os.Getenv("SECRET_SLACK_TOKEN"))
+	q.Set(slackUserGroupURLUserGroupParam, userGroupID)
+	u.RawQuery = q.Encode()
+
+	res, err := s.HttpGet(u.String())
 	if err != nil {
 		return []model.User{}, err
 	}

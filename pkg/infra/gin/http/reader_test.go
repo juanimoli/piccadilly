@@ -1,13 +1,12 @@
-package gin_test
+package http_test
 
 import (
+	http2 "github.com/juanimoli/piccadilly/pkg/infra/gin/http"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
 	"testing"
-
-	gin2 "github.com/juanimoli/piccadilly/cmd/piccadilly/infra/http/gin"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
@@ -22,7 +21,7 @@ func TestCreateReader_Url(t *testing.T) {
 			Path:   "/path",
 		},
 	}
-	reader := gin2.CreateReader(ctx)
+	reader := http2.CreateReader(ctx)
 
 	assert.Equal(t, "https://host/path", reader.GetUrl())
 }
@@ -35,7 +34,7 @@ func TestCreateReader_GetHeader(t *testing.T) {
 	ctx.Request = &http.Request{}
 	ctx.Request.Header = map[string][]string{}
 	ctx.Request.Header.Set(expectedKey, expectedValue)
-	reader := gin2.CreateReader(ctx)
+	reader := http2.CreateReader(ctx)
 
 	assert.Equal(t, expectedValue, reader.GetHeader(expectedKey))
 }
@@ -51,7 +50,7 @@ func TestCreateReader_Param(t *testing.T) {
 			Value: expectedValue,
 		},
 	}
-	reader := gin2.CreateReader(ctx)
+	reader := http2.CreateReader(ctx)
 
 	assert.Equal(t, expectedValue, reader.GetParameter(expectedKey))
 }
@@ -69,7 +68,7 @@ func TestCreateReader_GetPostForm(t *testing.T) {
 
 	assert.Nil(t, err)
 
-	reader := gin2.CreateReader(ctx)
+	reader := http2.CreateReader(ctx)
 
 	resultValue, exists := reader.GetFormData(expectedKey)
 
@@ -100,7 +99,7 @@ func TestCreateReader_ShouldBindJson(t *testing.T) {
 	ctx.Request = &http.Request{
 		Body: ioutil.NopCloser(strings.NewReader(structJson)),
 	}
-	reader := gin2.CreateReader(ctx)
+	reader := http2.CreateReader(ctx)
 
 	var result testStruct
 	err := reader.ReadBody(&result)

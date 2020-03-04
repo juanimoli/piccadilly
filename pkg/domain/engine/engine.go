@@ -1,24 +1,22 @@
 package engine
 
 import (
-	"net/http"
-
-	"github.com/juanimoli/piccadilly/pkg/domain/controller"
+	"github.com/juanimoli/piccadilly/pkg/domain/http"
+	net "net/http"
 )
 
 type ServerEngine interface {
-	ControllerRegistrable
-	http.Handler
+	net.Handler
 
-	Run() error
+	Run(port string) error
 
 	Shutdown() error
-}
 
-type ControllerRegistrable interface {
-	Register(controller controller.Controller)
-}
+	GET(url string, handlers ...http.Handler)
+	POST(url string, handlers ...http.Handler)
+	PUT(url string, handlers ...http.Handler)
+	PATCH(url string, handlers ...http.Handler)
+	DELETE(url string, handlers ...http.Handler)
 
-type ControllerBinder interface {
-	BindControllers(controllerRegistrable ControllerRegistrable)
+	Use(handlers ...http.Handler)
 }
