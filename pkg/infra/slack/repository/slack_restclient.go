@@ -2,6 +2,7 @@ package repository
 
 import (
 	"encoding/json"
+	"fmt"
 	http2 "github.com/juanimoli/piccadilly/pkg/domain/http"
 	"github.com/juanimoli/piccadilly/pkg/domain/model"
 	model2 "github.com/juanimoli/piccadilly/pkg/infra/slack/model"
@@ -45,6 +46,8 @@ func (s slackRestClientRepository) GetUsers(userGroupID string) ([]model.User, e
 	q.Set(slackUserGroupURLUserGroupParam, userGroupID)
 	u.RawQuery = q.Encode()
 
+	fmt.Printf("Performing GET to %s\n", u.String())
+
 	res, err := s.HttpGet(u.String())
 	if err != nil {
 		return []model.User{}, err
@@ -59,6 +62,8 @@ func (s slackRestClientRepository) GetUsers(userGroupID string) ([]model.User, e
 		if err != nil {
 			return []model.User{}, err
 		}
+
+		fmt.Printf("Response body: %s\n", string(bodyBytes))
 
 		//map response to model
 		var slackUserGroupResponse model2.SlackUserGroup
