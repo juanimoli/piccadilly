@@ -12,8 +12,18 @@ import (
 
 type HttpGet func(url string) (*http.Response, error)
 
-type SlackRestClientRepository struct {
+type RestClientRepository interface {
+	GetUsers(userGroupID string) ([]model.User, error)
+}
+
+type slackRestClientRepository struct {
 	HttpGet HttpGet
+}
+
+func CreateSlackRestClientRepository(get HttpGet) RestClientRepository {
+	return &slackRestClientRepository{
+		HttpGet: get,
+	}
 }
 
 const (
@@ -22,7 +32,7 @@ const (
 	slackUserGroupURLUserGroupParam = "userGroup"
 )
 
-func (s SlackRestClientRepository) GetUsers(userGroupID string) ([]model.User, error) {
+func (s slackRestClientRepository) GetUsers(userGroupID string) ([]model.User, error) {
 	u, err := url.Parse(slackUserGroupURL)
 
 	if err != nil {
