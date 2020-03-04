@@ -2,6 +2,7 @@ package repository
 
 import (
 	"encoding/json"
+	http2 "github.com/juanimoli/piccadilly/pkg/domain/http"
 	"github.com/juanimoli/piccadilly/pkg/domain/model"
 	model2 "github.com/juanimoli/piccadilly/pkg/infra/slack/model"
 	"io/ioutil"
@@ -64,8 +65,12 @@ func (s slackRestClientRepository) GetUsers(userGroupID string) ([]model.User, e
 		err = json.Unmarshal(bodyBytes, &slackUserGroupResponse)
 
 		//check map
-		if err != nil || !slackUserGroupResponse.Ok {
+		if err != nil {
 			return []model.User{}, err
+		}
+
+		if !slackUserGroupResponse.Ok {
+			return []model.User{}, http2.CreateInternalError()
 		}
 
 		return mapSlackUserGroup(slackUserGroupResponse), nil
