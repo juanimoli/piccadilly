@@ -20,7 +20,7 @@ func CreateGetRandomUserUseCase(clientRepository repository.RestClientRepository
 		//TODO check que no salga siempre el mismo y que no salgas vos mismo
 		selected := users[rand.Intn(len(users))]
 		return model.SlackMessage{
-			Message:      fmt.Sprintf("<@%s> has been selected to review %s pull request", selected, request.PullRequestUrl),
+			Message:      fmt.Sprintf("<@%s> has been selected to review %s pull request", selected.ID, request.PullRequestUrl),
 			Channel:      request.ChannelId,
 			ResponseType: "in_channel",
 			//TODO CHEQUEAME ESTO BRE
