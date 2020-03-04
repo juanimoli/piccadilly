@@ -19,7 +19,7 @@ func main() {
 	e.GET("/ping", health.CreateGetBody())
 	e.POST("/slack/random", random.CreatePostBody(getRandomUseCase))
 
-	if err := e.Run("8080"); err != nil {
+	if err := e.Run("3000"); err != nil {
 		fmt.Println(err.Error())
 	}
 }
