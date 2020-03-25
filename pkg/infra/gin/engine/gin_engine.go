@@ -4,14 +4,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	http2 "github.com/juanimoli/piccadilly/pkg/domain/http"
-	http3 "github.com/juanimoli/piccadilly/pkg/infra/gin/http"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	http2 "github.com/juanimoli/piccadilly/pkg/domain/http"
+	http3 "github.com/juanimoli/piccadilly/pkg/infra/gin/http"
 
 	"github.com/juanimoli/piccadilly/pkg/domain/engine"
 

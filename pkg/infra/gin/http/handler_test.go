@@ -1,8 +1,9 @@
 package http_test
 
 import (
-	http2 "github.com/juanimoli/piccadilly/pkg/infra/gin/http"
 	"testing"
+
+	http2 "github.com/juanimoli/piccadilly/pkg/infra/gin/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/juanimoli/piccadilly/pkg/domain/http"

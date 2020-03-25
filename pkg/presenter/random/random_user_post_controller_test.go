@@ -2,9 +2,10 @@ package random_test
 
 import (
 	"encoding/json"
+	"testing"
+
 	"github.com/juanimoli/piccadilly/pkg/domain/model"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 //func TestGivenAReaderMockWithFullJSON_WhenThePostBodyIsExecuted_ThenTheBodyIsConsumed(t *testing.T) {

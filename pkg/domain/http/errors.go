@@ -24,11 +24,3 @@ func CreateBadRequestError(message string) error {
 func CreateInternalError() error {
 	return createHttpError(http.StatusInternalServerError, "internal error")
 }
-
-func CreateUnauthorizedError() error {
-	return createHttpError(http.StatusUnauthorized, "unauthorized")
-}
-
-func CreateNotFoundError() error {
-	return createHttpError(http.StatusNotFound, "not found")
-}

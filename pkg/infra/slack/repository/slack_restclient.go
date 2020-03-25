@@ -2,13 +2,14 @@ package repository
 
 import (
 	"encoding/json"
-	http2 "github.com/juanimoli/piccadilly/pkg/domain/http"
-	"github.com/juanimoli/piccadilly/pkg/domain/model"
-	model2 "github.com/juanimoli/piccadilly/pkg/infra/slack/model"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
+
+	http2 "github.com/juanimoli/piccadilly/pkg/domain/http"
+	"github.com/juanimoli/piccadilly/pkg/domain/model"
+	model2 "github.com/juanimoli/piccadilly/pkg/infra/slack/model"
 )
 
 type HttpGet func(url string) (*http.Response, error)

@@ -1,8 +1,9 @@
 package engine
 
 import (
-	"github.com/juanimoli/piccadilly/pkg/domain/http"
 	net "net/http"
+
+	"github.com/juanimoli/piccadilly/pkg/domain/http"
 )
 
 type ServerEngine interface {

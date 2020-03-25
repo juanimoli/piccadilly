@@ -1,10 +1,11 @@
 package random
 
 import (
-	"github.com/juanimoli/piccadilly/pkg/domain/http"
-	"github.com/juanimoli/piccadilly/pkg/domain/model"
 	"regexp"
 	"strings"
+
+	"github.com/juanimoli/piccadilly/pkg/domain/http"
+	"github.com/juanimoli/piccadilly/pkg/domain/model"
 )
 
 func Map(ctx http.Reader) (model.ReviewRequest, error) {

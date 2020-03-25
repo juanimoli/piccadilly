@@ -1,12 +1,13 @@
 package http_test
 
 import (
-	http2 "github.com/juanimoli/piccadilly/pkg/infra/gin/http"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
 	"testing"
+
+	http2 "github.com/juanimoli/piccadilly/pkg/infra/gin/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"

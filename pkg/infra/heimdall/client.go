@@ -1,10 +1,11 @@
 package heimdall
 
 import (
-	"github.com/gojektech/heimdall/httpclient"
-	"github.com/juanimoli/piccadilly/pkg/infra/slack/repository"
 	"net/http"
 	"time"
+
+	"github.com/gojektech/heimdall/httpclient"
+	"github.com/juanimoli/piccadilly/pkg/infra/slack/repository"
 )
 
 func CreateGetClient() repository.HttpGet {
